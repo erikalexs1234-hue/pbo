@@ -1,0 +1,30 @@
+// Membuat Map untuk menyimpan data mahasiswa
+let mahasiswa = new Map();
+mahasiswa.set("001", "Andi");
+mahasiswa.set("002", "Budi");
+mahasiswa.set("003", "citra");
+mahasiswa.set("002", "citra");  // Mengganti nilai untuk kunci "002"
+
+// Fungsi untuk mencetak elemen array dipisahkan koma
+function printItems(arr) {
+    console.log(arr.join(", "));
+}
+
+// Membuat Set untuk menyimpan tugas (hanya nilai unik)
+let tugas = new Set();
+tugas.add("Belajar OOP");
+tugas.add("Mengerjakan Tugas");
+tugas.add("Belajar OOP");  // Tidak ditambahkan lagi (duplikat)
+
+// Menjalankan kode
+console.log("Data mahasiswa:");
+console.log("001:", mahasiswa.get("001"));  // Output: Andi
+console.log("002:", mahasiswa.get("002"));  // Output: citra
+console.log("003:", mahasiswa.get("003"));  // Output: citra
+
+printItems([1, 2, 3]);                    // Output: 1, 2, 3
+printItems(["A", "B", "C"]);              // Output: A, B, C
+printItems([1, 2, 3, "A", "B", "C"]);     // Output: 1, 2, 3, A, B, C
+
+console.log("Tugas:", tugas);  
+// Output: Set(2) { 'Belajar OOP', 'Mengerjakan Tugas' }
