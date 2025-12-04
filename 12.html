@@ -4,15 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GUI Sederhana</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        img {
+            width: 200px;
+            border-radius: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
 </head>
+
 <body>
+
     <h1 id="title">Halo, Mahasiswa!</h1>
-    <button onclick="ubahTeks()">Klik Saya</button>
+
+    <h2>Ini Heading 2</h2>
+
+    <ol>
+        <li>Satu</li>
+        <li>Dua</li>
+    </ol>
+
+    <h3>Tabel 2x2</h3>
+    <table>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+    </table>
+
+    <div class="container">
+        <img src="https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637561_960_720.png" alt="Avatar">
+
+        <div>
+            <input type="text" id="inputText" placeholder="Tulis sesuatu...">
+            <button onclick="kirim()">Kirim</button>
+        </div>
+    </div>
 
     <script>
-        function ubahTeks() {
-            document.getElementById("title").innerText = "Teks telah berubah!";
+        function kirim() {
+            let isi = document.getElementById("inputText").value;
+            alert("Kamu mengirim: " + isi);
         }
     </script>
+
 </body>
 </html>
