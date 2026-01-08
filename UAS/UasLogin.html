@@ -10,23 +10,24 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* BACKGROUND HALAMAN (KUNING) */
 body {
   height: 100vh;
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ff5252, #ffffff);
+  background: linear-gradient(135deg, #fdd835, #fff59d);
 }
 
-/* CARD */
+/* CARD LOGIN */
 .card {
-  background: white;
-  width: 340px;
+  width: 350px;
   padding: 30px;
-  border-radius: 16px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffffff 65%, #ffebee);
+  box-shadow: 0 25px 60px rgba(229,57,53,.35);
   text-align: center;
-  box-shadow: 0 20px 40px rgba(255,0,0,.25);
   animation: fadeUp .8s ease;
 }
 
@@ -44,61 +45,61 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(229,57,53,.5);
+  box-shadow: 0 12px 30px rgba(229,57,53,.6);
 }
 
 .logo span {
-  font-size: 28px;
-  font-weight: bold;
   color: white;
+  font-size: 26px;
+  font-weight: bold;
   letter-spacing: 2px;
 }
 
-/* INPUT GROUP */
+/* INPUT */
 .input-group {
   position: relative;
-  margin-top: 12px;
+  margin-top: 15px;
 }
 
 .input-group input {
   width: 100%;
-  padding: 12px 40px 12px 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+  padding: 13px 42px 13px 14px;
+  border-radius: 12px;
+  border: none;
   outline: none;
-  box-shadow: 0 6px 15px rgba(0,0,0,.15);
+  background: white;
+  box-shadow: 0 8px 18px rgba(0,0,0,.2);
 }
 
 /* EYE ICON */
 .eye {
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 18px;
 }
 
 /* BUTTON */
 button {
   width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 12px;
+  padding: 14px;
+  margin-top: 16px;
+  border-radius: 14px;
   border: none;
   font-weight: bold;
   cursor: pointer;
-  transition: all .3s ease;
+  transition: .3s;
 }
 
 .btn-login {
   background: #e53935;
   color: white;
+  box-shadow: 0 10px 25px rgba(229,57,53,.5);
 }
 
 .btn-login:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(229,57,53,.4);
 }
 
 .btn-cancel, .btn-logout {
@@ -108,15 +109,13 @@ button {
 
 /* LOADING */
 .loading {
-  margin-top: 15px;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
+  margin: 15px auto;
   border: 4px solid #ddd;
   border-top: 4px solid #e53935;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* SUCCESS */
@@ -126,7 +125,7 @@ button {
 
 /* ANIMATION */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(25px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -166,6 +165,7 @@ button {
 
   <button class="btn-login">LOGIN</button>
   <button class="btn-cancel">CANCEL</button>
+
   <div id="loading" class="loading hidden"></div>
 </div>
 
@@ -195,7 +195,6 @@ class UserDatabase {
       ]));
     }
   }
-
   static getUsers() {
     return JSON.parse(localStorage.getItem("users")) || [];
   }
@@ -208,15 +207,12 @@ class AuthService {
       u => u.username === username && u.password === password
     );
   }
-
   static save(user) {
     localStorage.setItem("currentUser", JSON.stringify(user));
   }
-
   static get() {
     return JSON.parse(localStorage.getItem("currentUser"));
   }
-
   static logout() {
     localStorage.removeItem("currentUser");
   }
@@ -244,8 +240,8 @@ class LoginController {
   }
 
   login() {
-    const user = document.getElementById("inputUsername").value;
-    const pass = document.getElementById("inputPassword").value;
+    const user = inputUsername.value;
+    const pass = inputPassword.value;
     const loading = document.getElementById("loading");
     const card = document.getElementById("loginPage");
 
@@ -266,30 +262,28 @@ class LoginController {
     }, 1000);
   }
 
-  cancel() {
-    if (confirm("Yakin ingin keluar?")) window.history.back();
-  }
-
   showProfile() {
     const user = AuthService.get();
     if (!user) return;
 
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("profilePage").classList.remove("hidden");
-
-    document.getElementById("welcomeText").innerHTML =
-      `Halo <b>${user.username}</b>, selamat datang 👋`;
+    loginPage.classList.add("hidden");
+    profilePage.classList.remove("hidden");
+    welcomeText.innerHTML = `Halo <b>${user.username}</b>, selamat datang 👋`;
   }
 
   logout() {
     AuthService.logout();
-    document.getElementById("profilePage").classList.add("hidden");
-    document.getElementById("loginPage").classList.remove("hidden");
+    profilePage.classList.add("hidden");
+    loginPage.classList.remove("hidden");
+  }
+
+  cancel() {
+    if (confirm("Yakin ingin keluar?")) history.back();
   }
 
   togglePassword() {
-    const input = document.getElementById("inputPassword");
-    input.type = input.type === "password" ? "text" : "password";
+    inputPassword.type =
+      inputPassword.type === "password" ? "text" : "password";
   }
 
   autoLogin() {
@@ -297,7 +291,7 @@ class LoginController {
   }
 }
 
-// ===== INIT =====
+// INIT
 UserDatabase.init();
 new LoginController();
 </script>
