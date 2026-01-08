@@ -225,11 +225,12 @@ function login() {
 
 function cancelLogin() {
   const yakin = confirm("Anda yakin ingin keluar halaman ini?");
+
   if (yakin) {
-    document.getElementById("inputUsername").value = "";
-    document.getElementById("inputPassword").value = "";
+    window.history.back(); 
   }
 }
+
 
 function showProfile() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
