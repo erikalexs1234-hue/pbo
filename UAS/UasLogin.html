@@ -16,22 +16,34 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: url("man united wp.jpg") no-repeat center center fixed;
+  background-size: cover;
 }
 
 /* CARD */
 .card {
-  background: white;
-  width: 330px;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.95),
+    rgba(240,240,255,0.95)
+  );
+  width: 340px;
   padding: 30px;
-  border-radius: 16px;
+  border-radius: 18px;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+  box-shadow: 0 20px 40px rgba(0,0,0,.35);
   animation: fadeUp .8s ease;
 }
 
 .hidden {
   display: none;
+}
+
+/* LOGO */
+.logo {
+  width: 70px;
+  margin-bottom: 10px;
+  animation: pop .6s ease;
 }
 
 /* INPUT */
@@ -148,11 +160,15 @@ button {
 
 <!-- LOGIN PAGE -->
 <div class="card" id="loginPage">
-  <h2>Login Sistem</h2>
+  <img src="4k-landscape-scenery-sunset-wallpaper-preview.jpg" class="logo">
+  <h2>Login</h2>
+
   <input id="inputUsername" placeholder="Username">
   <input id="inputPassword" type="password" placeholder="Password">
+
   <button class="btn-login" onclick="login()">LOGIN</button>
   <button class="btn-cancel" onclick="cancelLogin()">CANCEL</button>
+
   <div id="loading" class="loading hidden"></div>
 </div>
 
@@ -225,12 +241,10 @@ function login() {
 
 function cancelLogin() {
   const yakin = confirm("Anda yakin ingin keluar halaman ini?");
-
   if (yakin) {
-    window.history.back(); 
+    window.history.back();
   }
 }
-
 
 function showProfile() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
