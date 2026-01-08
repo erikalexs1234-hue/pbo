@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Login PBO UAS</title>
+<title>UAS Login PBO</title>
 
 <style>
 * {
@@ -12,10 +12,11 @@
 
 body {
   height: 100vh;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f093fb, #5f86ff);
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
 /* CARD */
@@ -40,6 +41,7 @@ input {
   margin-top: 12px;
   border-radius: 10px;
   border: 1px solid #ddd;
+  outline: none;
 }
 
 /* BUTTON UX */
@@ -51,17 +53,17 @@ button {
   border: none;
   font-weight: bold;
   cursor: pointer;
-  transition: .3s;
+  transition: all .3s ease;
 }
 
 .btn-login {
-  background: #5f86ff;
+  background: #667eea;
   color: white;
 }
 
 .btn-login:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(95,134,255,.4);
+  box-shadow: 0 8px 20px rgba(102,126,234,.4);
 }
 
 .btn-login:active {
@@ -102,8 +104,8 @@ button {
 <!-- LOGIN PAGE -->
 <div class="card" id="loginPage">
   <h2>Login Sistem</h2>
-  <input id="username" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
+  <input id="inputUsername" placeholder="Username">
+  <input id="inputPassword" type="password" placeholder="Password">
   <button class="btn-login" onclick="login()">LOGIN</button>
 </div>
 
@@ -128,8 +130,7 @@ class UserDatabase {
   static init() {
     if (!localStorage.getItem("users")) {
       const users = [
-        new User("admin", "1234"),
-        new User("user", "abcd")
+        new User("Erik1234", "Erik3456")
       ];
       localStorage.setItem("users", JSON.stringify(users));
     }
@@ -153,8 +154,8 @@ UserDatabase.init();
 
 // ===== FUNCTION =====
 function login() {
-  const usernameInput = document.getElementById("username").value;
-  const passwordInput = document.getElementById("password").value;
+  const usernameInput = document.getElementById("inputUsername").value;
+  const passwordInput = document.getElementById("inputPassword").value;
 
   const user = Auth.login(usernameInput, passwordInput);
 
