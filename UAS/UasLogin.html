@@ -26,7 +26,7 @@ body {
   border-radius: 16px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,.2);
-  animation: fadeUp 0.8s ease;
+  animation: fadeUp .8s ease;
 }
 
 .hidden {
@@ -51,7 +51,7 @@ button {
   border: none;
   font-weight: bold;
   cursor: pointer;
-  transition: all .3s ease;
+  transition: .3s;
 }
 
 .btn-login {
@@ -68,12 +68,6 @@ button {
   transform: scale(.95);
 }
 
-/* SUCCESS */
-.success-icon {
-  font-size: 50px;
-  animation: pop .5s ease;
-}
-
 .btn-logout {
   background: #e53935;
   color: white;
@@ -81,6 +75,12 @@ button {
 
 .btn-logout:hover {
   background: #c62828;
+}
+
+/* SUCCESS */
+.success-icon {
+  font-size: 48px;
+  animation: pop .5s ease;
 }
 
 /* ANIMATION */
@@ -99,7 +99,7 @@ button {
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 <div class="card" id="loginPage">
   <h2>Login Sistem</h2>
   <input id="username" placeholder="Username">
@@ -107,7 +107,7 @@ button {
   <button class="btn-login" onclick="login()">LOGIN</button>
 </div>
 
-<!-- PROFILE -->
+<!-- PROFILE PAGE -->
 <div class="card hidden" id="profilePage">
   <div class="success-icon">✅</div>
   <h2>Berhasil Login</h2>
@@ -153,16 +153,16 @@ UserDatabase.init();
 
 // ===== FUNCTION =====
 function login() {
-  const username = username.value;
-  const password = password.value;
+  const usernameInput = document.getElementById("username").value;
+  const passwordInput = document.getElementById("password").value;
 
-  const user = Auth.login(username, password);
+  const user = Auth.login(usernameInput, passwordInput);
 
   if (user) {
     localStorage.setItem("currentUser", JSON.stringify(user));
     showProfile();
   } else {
-    alert("❌ Login gagal! Password salah");
+    alert("❌ Login gagal! Username atau password salah");
   }
 }
 
@@ -170,10 +170,10 @@ function showProfile() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   if (!user) return;
 
-  loginPage.classList.add("hidden");
-  profilePage.classList.remove("hidden");
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("profilePage").classList.remove("hidden");
 
-  welcomeText.innerHTML = `
+  document.getElementById("welcomeText").innerHTML = `
     Halo <b>${user.username}</b>,<br>
     Selamat datang di sistem
   `;
@@ -181,8 +181,8 @@ function showProfile() {
 
 function logout() {
   localStorage.removeItem("currentUser");
-  profilePage.classList.add("hidden");
-  loginPage.classList.remove("hidden");
+  document.getElementById("profilePage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
 }
 
 // AUTO LOGIN
