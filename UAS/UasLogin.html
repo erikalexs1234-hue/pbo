@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Login PBO UAS</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f093fb, #5f86ff);
+}
+
+/* CARD */
+.card {
+  background: white;
+  width: 320px;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+  animation: fadeUp 0.8s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+/* INPUT */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+/* BUTTON UX */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 18px;
+  border-radius: 12px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+
+.btn-login {
+  background: #5f86ff;
+  color: white;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(95,134,255,.4);
+}
+
+.btn-login:active {
+  transform: scale(.95);
+}
+
+/* SUCCESS */
+.success-icon {
+  font-size: 50px;
+  animation: pop .5s ease;
+}
+
+.btn-logout {
+  background: #e53935;
+  color: white;
+}
+
+.btn-logout:hover {
+  background: #c62828;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0); }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="card" id="loginPage">
+  <h2>Login Sistem</h2>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button class="btn-login" onclick="login()">LOGIN</button>
+</div>
+
+<!-- PROFILE -->
+<div class="card hidden" id="profilePage">
+  <div class="success-icon">✅</div>
+  <h2>Berhasil Login</h2>
+  <p id="welcomeText"></p>
+  <button class="btn-logout" onclick="logout()">Logout</button>
+</div>
+
+<script>
+// ===== PBO =====
+class User {
+  constructor(username, password) {
+    this.username = username;
+    this.password = password;
+  }
+}
+
+class UserDatabase {
+  static init() {
+    if (!localStorage.getItem("users")) {
+      const users = [
+        new User("admin", "1234"),
+        new User("user", "abcd")
+      ];
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+  }
+
+  static getUsers() {
+    return JSON.parse(localStorage.getItem("users"));
+  }
+}
+
+class Auth {
+  static login(username, password) {
+    return UserDatabase.getUsers().find(
+      u => u.username === username && u.password === password
+    );
+  }
+}
+
+// ===== INIT =====
+UserDatabase.init();
+
+// ===== FUNCTION =====
+function login() {
+  const username = username.value;
+  const password = password.value;
+
+  const user = Auth.login(username, password);
+
+  if (user) {
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    showProfile();
+  } else {
+    alert("❌ Login gagal! Password salah");
+  }
+}
+
+function showProfile() {
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  if (!user) return;
+
+  loginPage.classList.add("hidden");
+  profilePage.classList.remove("hidden");
+
+  welcomeText.innerHTML = `
+    Halo <b>${user.username}</b>,<br>
+    Selamat datang di sistem
+  `;
+}
+
+function logout() {
+  localStorage.removeItem("currentUser");
+  profilePage.classList.add("hidden");
+  loginPage.classList.remove("hidden");
+}
+
+// AUTO LOGIN
+if (localStorage.getItem("currentUser")) {
+  showProfile();
+}
+</script>
+
+</body>
+</html>
