@@ -181,6 +181,7 @@ class User {
   }
 }
 
+// ===== DATABASE =====
 class UserDatabase {
   static init() {
     if (!localStorage.getItem("users")) {
@@ -192,74 +193,125 @@ class UserDatabase {
   }
 
   static getUsers() {
-    return JSON.parse(localStorage.getItem("users"));
+    return JSON.parse(localStorage.getItem("users")) || [];
   }
 }
 
-class Auth {
+// ===== AUTH =====
+class AuthService {
   static login(username, password) {
     return UserDatabase.getUsers().find(
       u => u.username === username && u.password === password
     );
   }
+
+  static saveSession(user) {
+    localStorage.setItem("currentUser", JSON.stringify(user));
+  }
+
+  static getSession() {
+    return JSON.parse(localStorage.getItem("currentUser"));
+  }
+
+  static logout() {
+    localStorage.removeItem("currentUser");
+  }
 }
 
-// ===== INIT =====
-UserDatabase.init();
+// ===== VIEW =====
+class View {
+  static show(elementId) {
+    document.getElementById(elementId).classList.remove("hidden");
+  }
 
-// ===== FUNCTION =====
-function login() {
-  const usernameInput = document.getElementById("inputUsername").value;
-  const passwordInput = document.getElementById("inputPassword").value;
-  const loading = document.getElementById("loading");
-  const card = document.getElementById("loginPage");
+  static hide(elementId) {
+    document.getElementById(elementId).classList.add("hidden");
+  }
 
-  loading.classList.remove("hidden");
+  static shake(elementId) {
+    const el = document.getElementById(elementId);
+    el.classList.add("shake");
+    setTimeout(() => el.classList.remove("shake"), 400);
+  }
+}
 
-  setTimeout(() => {
-    const user = Auth.login(usernameInput, passwordInput);
-    loading.classList.add("hidden");
+// ===== CONTROLLER =====
+class LoginController {
+  constructor() {
+    this.loginPage = "loginPage";
+    this.profilePage = "profilePage";
+    this.loading = document.getElementById("loading");
 
-    if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      showProfile();
-    } else {
-      alert("❌ Login gagal! Username atau password salah");
-      card.classList.add("shake");
-      setTimeout(() => card.classList.remove("shake"), 400);
+    this.bindEvents();
+    this.autoLogin();
+  }
+
+  bindEvents() {
+    document.querySelector(".btn-login")
+      .addEventListener("click", () => this.login());
+
+    document.querySelector(".btn-cancel")
+      .addEventListener("click", () => this.cancel());
+
+    document.querySelector(".btn-logout")
+      .addEventListener("click", () => this.logout());
+  }
+
+  login() {
+    const username = document.getElementById("inputUsername").value;
+    const password = document.getElementById("inputPassword").value;
+
+    this.loading.classList.remove("hidden");
+
+    setTimeout(() => {
+      const user = AuthService.login(username, password);
+      this.loading.classList.add("hidden");
+
+      if (user) {
+        AuthService.saveSession(user);
+        this.showProfile();
+      } else {
+        alert("❌ Login gagal! Username atau password salah");
+        View.shake(this.loginPage);
+      }
+    }, 1200);
+  }
+
+  cancel() {
+    if (confirm("Anda yakin ingin keluar halaman ini?")) {
+      window.history.back();
     }
-  }, 1200);
+  }
+
+  showProfile() {
+    const user = AuthService.getSession();
+    if (!user) return;
+
+    View.hide(this.loginPage);
+    View.show(this.profilePage);
+
+    document.getElementById("welcomeText").innerHTML = `
+      Halo <b>${user.username}</b>,<br>
+      Selamat datang di sistem
+    `;
+  }
+
+  logout() {
+    AuthService.logout();
+    View.hide(this.profilePage);
+    View.show(this.loginPage);
+  }
+
+  autoLogin() {
+    if (AuthService.getSession()) {
+      this.showProfile();
+    }
+  }
 }
 
-function cancelLogin() {
-  const yakin = confirm("Anda yakin ingin keluar halaman ini?");
-  if (yakin) window.history.back();
-}
-
-function showProfile() {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
-  if (!user) return;
-
-  document.getElementById("loginPage").classList.add("hidden");
-  document.getElementById("profilePage").classList.remove("hidden");
-
-  document.getElementById("welcomeText").innerHTML = `
-    Halo <b>${user.username}</b>,<br>
-    Selamat datang di sistem
-  `;
-}
-
-function logout() {
-  localStorage.removeItem("currentUser");
-  document.getElementById("profilePage").classList.add("hidden");
-  document.getElementById("loginPage").classList.remove("hidden");
-}
-
-// AUTO LOGIN
-if (localStorage.getItem("currentUser")) {
-  showProfile();
-}
+// ===== INIT APP =====
+UserDatabase.init();
+new LoginController();
 </script>
-
 </body>
 </html>
