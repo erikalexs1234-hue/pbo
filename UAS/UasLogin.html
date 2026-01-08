@@ -16,22 +16,17 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("manunited.jpg") no-repeat center center fixed;
-  background-size: cover;
+  background: linear-gradient(135deg, #fdd835, #81d4fa);
 }
 
 /* CARD */
 .card {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.95),
-    rgba(240,240,255,0.95)
-  );
-  width: 340px;
+  background: white;
+  width: 330px;
   padding: 30px;
-  border-radius: 18px;
+  border-radius: 16px;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,.35);
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
   animation: fadeUp .8s ease;
 }
 
@@ -41,9 +36,23 @@ body {
 
 /* LOGO */
 .logo {
-  width: 70px;
-  margin-bottom: 10px;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fdd835, #f57f17);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
   animation: pop .6s ease;
+}
+
+.logo span {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  letter-spacing: 2px;
 }
 
 /* INPUT */
@@ -56,7 +65,7 @@ input {
   outline: none;
 }
 
-/* BUTTON UX */
+/* BUTTON */
 button {
   width: 100%;
   padding: 12px;
@@ -78,10 +87,6 @@ button {
   box-shadow: 0 8px 20px rgba(102,126,234,.4);
 }
 
-.btn-login:active {
-  transform: scale(.95);
-}
-
 .btn-cancel {
   background: #e53935;
   color: white;
@@ -89,21 +94,11 @@ button {
 
 .btn-cancel:hover {
   background: #c62828;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(229,57,53,.4);
-}
-
-.btn-cancel:active {
-  transform: scale(.95);
 }
 
 .btn-logout {
   background: #e53935;
   color: white;
-}
-
-.btn-logout:hover {
-  background: #c62828;
 }
 
 /* LOADING */
@@ -160,15 +155,12 @@ button {
 
 <!-- LOGIN PAGE -->
 <div class="card" id="loginPage">
-  <img src="wall.jpg" class="logo">
+  <div class="logo"><span>PBO</span></div>
   <h2>Login</h2>
-
   <input id="inputUsername" placeholder="Username">
   <input id="inputPassword" type="password" placeholder="Password">
-
   <button class="btn-login" onclick="login()">LOGIN</button>
   <button class="btn-cancel" onclick="cancelLogin()">CANCEL</button>
-
   <div id="loading" class="loading hidden"></div>
 </div>
 
@@ -241,9 +233,7 @@ function login() {
 
 function cancelLogin() {
   const yakin = confirm("Anda yakin ingin keluar halaman ini?");
-  if (yakin) {
-    window.history.back();
-  }
+  if (yakin) window.history.back();
 }
 
 function showProfile() {
